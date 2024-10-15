@@ -1,0 +1,28 @@
+services:
+  bigchaindb:
+    image: bigchaindb/bigchaindb:all-in-one
+    container_name: bigchaindb
+    ports:
+      - "9984:9984"
+      - "9985:9985"
+      - "26657:26657"
+      - "27018:27017"
+    volumes:
+      - /mnt/c/Users/mcalik/bigchaindb_docker/tendermint:/tendermint
+      - /mnt/c/Users/mcalik/bigchaindb_docker/mongodb/data/db:/data/db
+      - /mnt/c/Users/mcalik/bigchaindb_docker/mongodb/data/configdb:/data/configdb
+    environment:
+      - BIGCHAINDB_SERVER_LOGLEVEL=debug
+      - BIGCHAINDB_SERVER_WORKERS=5
+      - BIGCHAINDB_LOG_LEVEL_CONSOLE=debug
+    entrypoint: ["/usr/src/app/pkg/scripts/all-in-one.bash"]
+
+  express-server:
+    build: .
+    container_name: express-server
+    ports:
+      - "3000:3000"
+    depends_on:
+      - bigchaindb
+    environment:
+      - API_PATH=http://bigchaindb:9984/api/v1/
