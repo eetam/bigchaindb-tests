@@ -8,13 +8,13 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 # Install dependencies
-RUN npm install
+RUN npm install -g pm2 && npm install
 
 # Copy the rest of the application code
 COPY . .
 
-# Expose the port the app runs on
+# Expose the port your app runs on
 EXPOSE 3000
 
-# Command to run the application
-CMD ["node", "server.js"]
+# Start the app with PM2
+CMD ["pm2-runtime", "start", "server.js", "--name", "app", "-i", "10"]

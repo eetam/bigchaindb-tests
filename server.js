@@ -57,8 +57,14 @@ app.post('/create-transaction', async (req, res) => {
 
     try {
         const retrievedTx = await conn.postTransactionCommit(signedTransaction);
-        console.log('Transaction', retrievedTx.id, 'successfully posted.');
-        res.status(200).json(retrievedTx);
+        if(retrievedTx?.id) {
+            console.log('retrievedTx id', retrievedTx.id, 'successfully posted.');
+            res.status(200).json(retrievedTx);
+            return;
+        }
+
+        console.log('Transaction not posted');
+        res.status(500).json({ error: 'Transaction not posted.' });
     } catch (error) {
         console.error('Error posting transaction:', error);
         res.status(500).json({ error: error.message });

@@ -6,7 +6,7 @@ services:
       - "9984:9984"
       - "9985:9985"
       - "26657:26657"
-      - "27018:27017"
+      - "27017:27017"
     volumes:
       - /mnt/c/Users/mcalik/bigchaindb_docker/tendermint:/tendermint
       - /mnt/c/Users/mcalik/bigchaindb_docker/mongodb/data/db:/data/db
